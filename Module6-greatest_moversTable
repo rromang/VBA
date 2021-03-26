@@ -1,0 +1,57 @@
+Sub summary_tbl()
+
+Dim lastrow_ticker As Long
+Dim lastrow_summary As Long
+Dim ticker_rng As Range
+Dim percent_rng As Range
+Dim totalstock_rng As Range
+Dim prct_hi, prct_hi_ticker, prct_lo, prct_lo_ticker, stock_vol_max, stockmax_ticker As Variant
+
+
+lastrow_ticker = WorksheetFunction.CountA(Range("A:A"))
+Set ticker_rng = Range("A2", "A" & lastrow_ticker) 'establishes the range of ticker for all data
+
+lastrow_summary = WorksheetFunction.CountA(Range("J:J"))
+Set percent_rng = Range("K2", "K" & lastrow_summary) 'establishes the range of percent values
+Set totalstock_rng = Range("L2", "L" & lastrow_summary) 'establishes the range of stock vol
+
+startrow = 2
+    
+    For i = startrow To lastrow_ticker
+        If Cells(i, 11).Value = Application.WorksheetFunction.Max(percent_rng) Then 'checks if row is equal to the max in the,_
+        'designated range (% change)
+            prct_hi = Cells(i, 11).Value
+            prct_hi_ticker = Cells(i, 10).Value
+        End If
+        If Cells(i, 11).Value = Application.WorksheetFunction.Min(percent_rng) Then 'checks if row is equal to the min in the<_
+        'designated range (% change)
+            prct_lo = Cells(i, 11).Value
+            prct_lo_ticker = Cells(i, 10)
+        End If
+         If Cells(i, 12).Value = Application.WorksheetFunction.Max(totalstock_rng) Then 'checks if row is equal to the min in the,_
+         'designated range (total stock vol)
+            stock_vol_max = Cells(i, 12).Value
+            stockmax_ticker = Cells(i, 10).Value
+        End If
+    Next i
+
+    Cells(2, 16).Value = prct_hi
+    Cells(3, 16).Value = prct_lo
+    Cells(4, 16).Value = stock_vol_max
+    Cells(2, 17).Value = prct_hi_ticker
+    Cells(3, 17).Value = prct_lo_ticker
+    Cells(4, 17).Value = stockmax_ticker
+    
+
+Range("O2") = "Greatest % Increase"
+Range("O3") = "Greatest %Decrease"
+Range("O4") = "Greatest Total Volume"
+Range("P1") = "Value"
+Range("Q1") = "Ticker"
+Range("P2").NumberFormat = "0.00%"
+Range("P3").NumberFormat = "0.00%"
+Columns(15).EntireColumn.AutoFit
+Columns(16).EntireColumn.AutoFit
+Columns(17).EntireColumn.AutoFit
+
+End Sub
