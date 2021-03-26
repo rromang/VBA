@@ -1,0 +1,47 @@
+Sub percent_change()
+
+Dim lastrow_ticker As Long
+Dim lastrow_summary As Long
+Dim ticker_rng As Range
+Dim summary_rng As Range
+
+
+lastrow_ticker = WorksheetFunction.CountA(Range("A:A"))
+Set ticker_rng = Range("A2", "A" & lastrow_ticker) 'establishes the range of ticker
+
+lastrow_summary = WorksheetFunction.CountA(Range("J:J"))
+Set summary_rng = Range("J2", "J" & lastrow_summary) 'establishes the range of summary table
+
+startrow = 2
+'loop for each ticker value to find percent change
+For j = 2 To lastrow_summary
+    'loop for each row in ticker block to find open value and close value
+    For i = startrow To lastrow_ticker
+        If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then 'checks if the next row is not equal to previous row
+            endrow = Cells(i, 1).Row                                'establishes the last row of ticker of the same kind
+            open_value = Cells(startrow, 3).Value            'gets the value of the first cell in the block of tickers of the same kind (only possible if values are sorted)
+            close_value = Cells(endrow, 6).Value             'gets the value of the first cell in the block of tickers of the same kind (only possible if values are sorted)
+            startrow = endrow + 1                                  'resets the start row to start at the beginning of the next ticker block
+            i = lastrow_ticker                                          'forces vba to set i to the last loop condition once the rest of the statements were run so it get out of the loop
+        End If
+        
+    Next i
+    If open_value = 0 Then 'traps error if open value is 0
+        percentchange = 0
+    Else
+    percentchange = (close_value - open_value) / open_value 'sets equation for % change
+    Cells(j, 11).Value = percentchange
+    End If
+Next j
+
+Range("K1") = "Percent Change"
+Range("K2", "K" & lastrow_summary).NumberFormat = "0.00%"
+
+Columns(11).EntireColumn.AutoFit
+
+'MsgBox "the last row in the block is" & rownumber
+'MsgBox "the open date in the block is" & open_date
+'MsgBox "the open value in the block is" & open_value
+'MsgBox "the close date in the block is" & close_date
+'MsgBox "the close value in the block is" & close_value
+End Sub
