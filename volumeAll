@@ -1,0 +1,18 @@
+Sub volumeAll()
+
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+
+
+Dim wsh As Worksheet 'establishes a variable for worksheet type
+
+For Each wsh In Worksheets 'runs the subroutine to get total stock vol in all sheets
+    wsh.Select
+    Call total_Vol
+
+Next
+
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+
+End Sub
