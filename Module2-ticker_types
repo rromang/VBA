@@ -1,0 +1,24 @@
+Sub ticker_types()
+
+Application.ScreenUpdating = False 'worksheet is not visible when running the script
+Application.DisplayAlerts = False 'alerts are not displayed
+
+Dim ticker_rng As Range
+Dim lastrow As Long
+
+
+ActiveSheet.Range("A:A").Copy Range("J:J") 'copy range with repeated tickers into new column
+
+Range("J1").Value = "Ticker" 'places title for ticker in summary table
+ActiveSheet.Range("J2", Range("J2").End(xlDown)).Select 'selects the newly pasted ticker column in summary table
+Set ticker_rng = Selection 'sets ticker range to selected cells
+With ticker_rng
+    .RemoveDuplicates Columns:=1, Header:=xlNo 'open remove duplicates windows w/o,_
+    'headear selection(alert window still opens in my excel for Mac)
+End With
+
+Columns(10).EntireColumn.AutoFit
+
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+End Sub
