@@ -1,0 +1,19 @@
+Sub sort_data()
+
+Dim lastrow As Long
+
+'count all rows in ticker column
+lastrow = WorksheetFunction.CountA(Range("A:A"))
+'MsgBox lastrow
+
+   
+'sorts based on first column in ascending order
+With ActiveSheet.Sort
+     .SortFields.Add Key:=Range("A1"), Order:=xlAscending
+     .SortFields.Add Key:=Range("B1"), Order:=xlAscending
+     .SetRange Range("A1", "G" & lastrow)
+     .Header = xlYes
+     .Apply
+End With
+
+End Sub
