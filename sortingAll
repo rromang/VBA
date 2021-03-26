@@ -1,0 +1,18 @@
+Sub sortingAll()
+
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+
+
+Dim wsh As Worksheet 'establishes a variable for worksheet type
+
+For Each wsh In Worksheets 'runs the subroutine to sort all data in all sheets
+    wsh.Select
+    Call sort_data
+
+Next
+
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+
+End Sub
